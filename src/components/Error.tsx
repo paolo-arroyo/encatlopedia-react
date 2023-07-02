@@ -6,13 +6,16 @@ import { styled } from 'styled-components'
 const ErrorAlert = styled(Alert)`
     background: #ff8fb1;
     border: 1px solid #f54278;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 0;
+    color: black;
 `
 const ErrorMessage = () => {
     const { errorMsg } = useContext(ErrorContext)
-
     return (
         <>
-         { errorMsg !== '' && <ErrorAlert /> }
+         { errorMsg && <ErrorAlert> {errorMsg} </ErrorAlert> }
         </>
     )
 }

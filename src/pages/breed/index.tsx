@@ -23,11 +23,11 @@ const Breed = () => {
             setCatData?.(response.data)
             setLoading?.(false)
         }).catch(error => {
-            setErrorMsg?.('Apologies but we could not load new cats for you at this time! Miau!')
+            setErrorMsg?.('Apologies but we could not load cat information for you at this time! Miau!')
             setLoading?.(false)
             setTimeout(() => {
-                setErrorMsg?.('')
-            }, 3000)
+                setErrorMsg?.(null)
+            }, 5000)
         })
     },[catUrl, setCatData, setLoading, setErrorMsg])
 

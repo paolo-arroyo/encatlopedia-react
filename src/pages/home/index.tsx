@@ -16,14 +16,15 @@ const Home = () => {
     } = useContext(CatContext)
 
     const { setErrorMsg } = useContext(ErrorContext)
+
     useEffect(() => {
         axios.get(BREEDS_URL).then(response => {
             setBreeds?.(response.data)
         }).catch(error => {
             setErrorMsg?.('Apologies but we could not load new cats for you at this time! Miau!')
             setTimeout(() => {
-                setErrorMsg?.('')
-            }, 3000)
+                setErrorMsg?.(null)
+            }, 5000)
         })
     }, [setBreeds, setErrorMsg])
 
@@ -35,8 +36,8 @@ const Home = () => {
             }).catch(error => {
                 setErrorMsg?.('Apologies but we could not load new cats for you at this time! Miau!')
                 setTimeout(() => {
-                    setErrorMsg?.('')
-                }, 3000)
+                    setErrorMsg?.(null)
+                }, 5000)
             })
     }
 
@@ -59,8 +60,8 @@ const Home = () => {
             setErrorMsg?.('Apologies but we could not load new cats for you at this time! Miau!')
             e.target.innerText = "Load More"
             setTimeout(() => {
-                setErrorMsg?.('')
-            }, 3000)
+                setErrorMsg?.(null)
+            }, 5000)
         })
     }
     const handleSelect = (e:any) => {
