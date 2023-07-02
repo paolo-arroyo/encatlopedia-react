@@ -1,9 +1,7 @@
 import React, { useState, useEffect} from 'react'
-import { Card, Form } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
+import CatDisplay from '../../components/CatDisplay'
 import axios from 'axios'
-
-//API Constants
-const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
 
 // Type Declarations (Breed Data, Cat Images)
 export type BreedType = {
@@ -36,8 +34,25 @@ export type BreedType = {
     children: React.ReactNode
   }
 
+export type CatType = {
+    id: string,
+    url: string,
+    width: number,
+    height: number
+}
+
+export type CatProps = {
+    showCats: CatType[],
+    breed: string
+}
+
 const Home = () => {
     const [ breeds, setBreeds ] = useState<BreedType[]>([])
+    const [ selected, setSelected ] = useState('')
+    const [ showCats, setShowCats ] = useState<CatType[]>([])
+
+    //API Constants
+    const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
 
     const BreedHook = () => {
         try {
@@ -49,11 +64,25 @@ const Home = () => {
         }
     }
     useEffect(BreedHook, [])
-    console.log(breeds)
+
+    const getCats = (breed: string) => {
+        let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${breed}&limit=10`
+        try {
+            axios.get(catUrl).then(response => {
+                setShowCats(response.data)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const handleSelect = (e:any) => {
+        getCats(e.target.value)
+        setSelected(e.target.value)
+    }
   return (
     <div>
         <h1> Encatlopedia </h1>
-        <Form.Select aria-label="Select Cat Breed">
+        <Form.Select aria-label="Select Cat Breed" onChange={handleSelect}>
             <option> Select Breed </option>
             {breeds.map(breed => {
                 return (
@@ -61,6 +90,7 @@ const Home = () => {
                 )
             })}
         </Form.Select>
+        <CatDisplay showCats={showCats} breed={selected} />
     </div>
   )
 }
