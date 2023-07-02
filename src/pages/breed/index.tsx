@@ -4,6 +4,7 @@ import { Container, Card } from 'react-bootstrap'
 import { Back } from '../../components/Button'
 import { CatContext } from '../../contexts/CatContext'
 import axios from 'axios'
+import { ErrorContext } from '../../contexts/ErrorContext'
 
 const Breed = () => {
     const { id } = useParams()
@@ -11,20 +12,24 @@ const Breed = () => {
         loading, setLoading,
         catData, setCatData
     } = useContext(CatContext)
+
+    const { setErrorMsg } = useContext(ErrorContext)
+
     let catUrl = `https://api.thecatapi.com/v1/images/${id}`
 
     useEffect(() => {
         setLoading?.(true)
-        try {
-            axios.get(catUrl).then(response => {
-                setCatData?.(response.data)
-                setLoading?.(false)
-            })
-        } catch (error) {
-            console.log(error)
+        axios.get(catUrl).then(response => {
+            setCatData?.(response.data)
             setLoading?.(false)
-        }
-    },[catUrl, setCatData, setLoading])
+        }).catch(error => {
+            setErrorMsg?.('Apologies but we could not load new cats for you at this time! Miau!')
+            setLoading?.(false)
+            setTimeout(() => {
+                setErrorMsg?.('')
+            }, 3000)
+        })
+    },[catUrl, setCatData, setLoading, setErrorMsg])
 
   return (
     <Container>

@@ -14,7 +14,7 @@ export type CatProps = {
 const CatDisplay = (props: CatProps) => {
     const { showCats, getMoreCats, showMore } = props
     if (props.showCats.length === 0) {
-        return <div> No Cats Available </div>
+        return <Wrapper style={{ marginTop: "20px" }}> No Cats Available </Wrapper>
     } else {
         return (
             <Wrapper>
