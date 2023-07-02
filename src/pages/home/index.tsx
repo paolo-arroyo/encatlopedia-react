@@ -1,4 +1,5 @@
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Select } from '../../components/Select'
 import CatDisplay from '../../components/CatDisplay'
 import { CatContext } from '../../contexts/CatContext'
@@ -17,8 +18,22 @@ const Home = () => {
     } = useContext(CatContext)
 
     const { setErrorMsg } = useContext(ErrorContext)
+
+    const [searchParams] = useSearchParams()
+    const [search, setSearch] = useState(searchParams.get('breed'))
+
     useEffect(() => {
         setLoading?.(true)
+        const getInitialCats = (breed: string) => {
+            axios.get(`https://api.thecatapi.com/v1/images/search/?breed_ids=${breed}&limit=10`)
+            .then(response => {
+                setShowCats?.(response.data)
+                console.log('INTIIAL BREED', breed)
+            })
+        }
+        if (search) {
+            getInitialCats(search)
+        }
         axios.get(BREEDS_URL).then(response => {
             setBreeds?.(response.data)
             setLoading?.(false)
@@ -29,7 +44,7 @@ const Home = () => {
                 setErrorMsg?.(null)
             }, 5000)
         })
-    }, [setBreeds, setErrorMsg, setLoading])
+    }, [setBreeds, setErrorMsg, setLoading, setShowCats, search])
 
     const getCats = (breed: string) => {
         let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${breed}&limit=10`
@@ -76,7 +91,7 @@ const Home = () => {
     <div>
         <h1> Encatlopedia </h1>
         <h6> Breed: </h6>
-        <Select aria-label="Select Cat Breed" onChange={handleSelect}>
+        <Select aria-label="Select Cat Breed" onChange={handleSelect} value={search}>
             <option> Select Breed </option>
             {breeds?.map(b => {
                 return (
@@ -84,7 +99,7 @@ const Home = () => {
                 )
             })}
         </Select>
-        {showCats && selected && showMore !== undefined && loading !== undefined && <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} loading={loading} />}
+        {showCats !== undefined && selected !== undefined && showMore !== undefined && loading !== undefined && <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} loading={loading} />}
         
     </div>
   )
