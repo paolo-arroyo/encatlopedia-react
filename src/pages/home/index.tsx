@@ -1,8 +1,8 @@
 import { useEffect, useContext } from 'react'
 import { Form } from 'react-bootstrap'
 import CatDisplay from '../../components/CatDisplay'
-import axios from 'axios'
 import { CatContext } from '../../contexts/CatContext'
+import axios from 'axios'
 
 const Home = () => {
     const { 

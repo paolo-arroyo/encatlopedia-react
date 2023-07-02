@@ -1,4 +1,3 @@
-import React from 'react'
 import { CatImage } from '../contexts/CatContext'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
 

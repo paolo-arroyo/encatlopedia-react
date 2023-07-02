@@ -48,7 +48,7 @@ export type CatData = {
 export interface CatContextInterface {
     breeds: BreedType[],
     setBreeds: Dispatch<SetStateAction<BreedType[]>>,
-    showCats: CatImage[],
+    showCats?: CatImage[],
     setShowCats: Dispatch<SetStateAction<CatImage[]>>,
     selected: string,
     setSelected: Dispatch<SetStateAction<string>>,
