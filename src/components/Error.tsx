@@ -10,6 +10,7 @@ const ErrorAlert = styled(Alert)`
     font-weight: bold;
     border-radius: 0;
     color: black;
+    padding: 5px 0px;
 `
 const ErrorMessage = () => {
     const { errorMsg } = useContext(ErrorContext)

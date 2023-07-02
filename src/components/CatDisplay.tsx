@@ -8,13 +8,16 @@ export type CatProps = {
     showCats: CatImage[],
     breed: string,
     getMoreCats: (e:any) => void,
-    showMore: boolean
+    showMore: boolean,
+    loading: boolean
 }
 
 const CatDisplay = (props: CatProps) => {
-    const { showCats, getMoreCats, showMore } = props
+    const { showCats, getMoreCats, showMore, loading } = props
     if (props.showCats.length === 0) {
         return <Wrapper style={{ marginTop: "20px" }}> No Cats Available </Wrapper>
+    } else if (loading) {
+        return <Wrapper style={{ marginTop: "20px"}}> Loading images ... </Wrapper>
     } else {
         return (
             <Wrapper>

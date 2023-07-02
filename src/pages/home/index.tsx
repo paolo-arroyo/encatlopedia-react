@@ -13,20 +13,23 @@ const Home = () => {
         showCats, setShowCats,
         selected, setSelected,
         showMore, setShowMore,
+        loading, setLoading
     } = useContext(CatContext)
 
     const { setErrorMsg } = useContext(ErrorContext)
-
     useEffect(() => {
+        setLoading?.(true)
         axios.get(BREEDS_URL).then(response => {
             setBreeds?.(response.data)
+            setLoading?.(false)
         }).catch(error => {
+            setLoading?.(false)
             setErrorMsg?.('Apologies but we could not load new cats for you at this time! Miau!')
             setTimeout(() => {
                 setErrorMsg?.(null)
             }, 5000)
         })
-    }, [setBreeds, setErrorMsg])
+    }, [setBreeds, setErrorMsg, setLoading])
 
     const getCats = (breed: string) => {
         let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${breed}&limit=10`
@@ -44,11 +47,11 @@ const Home = () => {
     const getMoreCats = (e: any) => {
         e.target.innerText = "Loading More ..."
         let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${selected}&limit=10`
-
-        //Try: Make another GET request, add all in response to existing list of cat images, and filter out duplicates.
         axios.get(catUrl).then(response => {
             let newCats = showCats?.concat(response.data)
+            // Filter out duplicates 
             let uniqueCats = newCats?.filter((cat,index,self) => { return (self.findIndex((v) => v.id === cat.id) === index)})
+            // Check if no new images were added
             if (uniqueCats?.length === showCats?.length) {
                 setShowMore?.(false)
             }
@@ -81,7 +84,7 @@ const Home = () => {
                 )
             })}
         </Select>
-        {showCats && selected && showMore !== undefined && <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} />}
+        {showCats && selected && showMore !== undefined && loading !== undefined && <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} loading={loading} />}
         
     </div>
   )
