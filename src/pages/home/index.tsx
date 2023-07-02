@@ -3,6 +3,9 @@ import { Form } from 'react-bootstrap'
 import CatDisplay from '../../components/CatDisplay'
 import { CatContext } from '../../contexts/CatContext'
 import axios from 'axios'
+import { css } from '@emotion/react';
+
+const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
 
 const Home = () => {
     const { 
@@ -11,11 +14,7 @@ const Home = () => {
         selected, setSelected,
         showMore, setShowMore,
     } = useContext(CatContext)
-
-    //API Constants
-    const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
-
-    const BreedHook = () => {
+    useEffect(() => {
         try {
             axios.get(BREEDS_URL).then(response => {
                 setBreeds?.(response.data)
@@ -23,8 +22,7 @@ const Home = () => {
         } catch (error) {
             console.log(error)
         }
-    }
-    useEffect(BreedHook, [setBreeds])
+    }, [setBreeds])
 
     const getCats = (breed: string) => {
         let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${breed}&limit=10`
@@ -64,6 +62,7 @@ const Home = () => {
         getCats(e.target.value)
         setSelected?.(e.target.value)
     }
+
   return (
     <div>
         <h1> Encatlopedia </h1>

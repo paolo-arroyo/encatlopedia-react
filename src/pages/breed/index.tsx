@@ -13,7 +13,7 @@ const Breed = () => {
     } = useContext(CatContext)
     let catUrl = `https://api.thecatapi.com/v1/images/${id}`
 
-    const CatHook = () => {
+    useEffect(() => {
         setLoading?.(true)
         try {
             axios.get(catUrl).then(response => {
@@ -24,8 +24,8 @@ const Breed = () => {
             console.log(error)
             setLoading?.(false)
         }
-    }
-    useEffect(CatHook,[catUrl, setCatData, setLoading])
+    },[catUrl, setCatData, setLoading])
+    
   return (
     <Container>
         {loading && <h3 style={{textAlign: "center"}}> Loading ... </h3>}

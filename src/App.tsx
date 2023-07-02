@@ -4,7 +4,6 @@ import { Container } from 'react-bootstrap'
 import Home from './pages/home'
 import Breed from './pages/breed'
 import { CatProvider } from './contexts/CatContext';
-import { css } from '@emotion/react';
 
 const App = () => {
   return (
