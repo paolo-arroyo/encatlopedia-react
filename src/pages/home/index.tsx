@@ -1,38 +1,11 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Form } from 'react-bootstrap'
 import CatDisplay from '../../components/CatDisplay'
 import axios from 'axios'
+import { BreedType } from '../../contexts/CatContext'
+import { CatContext } from '../../contexts/CatContext'
 
 // Type Declarations (Breed Data, Cat Images)
-export type BreedType = {
-    id: string,
-    name: string,
-    temperament: string,
-    origin: string,
-    country_code: string,
-    life_span: string,
-    description: string,
-    indoor: boolean,
-    wikipedia_url: string,
-    weight: {
-        imperial: string,
-        metric: string
-    },
-    scores: {
-        adaptability: number,
-        affection_level: number,
-        child_friendly: number,
-        dog_friendly: number,
-        stranger_friendly: number,
-        energy_level: number,
-        grooming: number,
-        health_issues: number,
-        intelligence: number,
-        shedding_level: number,
-        social_needs: number,
-    },
-    children: React.ReactNode
-  }
 
 export type CatImage = {
     id: string,
@@ -58,7 +31,7 @@ export type CatProps = {
 }
 
 const Home = () => {
-    const [ breeds, setBreeds ] = useState<BreedType[]>([]) //Array containing breed data
+    const { breeds, setBreeds } = useContext(CatContext)
     const [ selected, setSelected ] = useState('') //Breed selector string
     const [ showCats, setShowCats ] = useState<CatImage[]>([]) //List of cat images to display
     const [ showMore, setShowMore] = useState(true) //Control visibility of 'Load More' button
@@ -69,7 +42,7 @@ const Home = () => {
     const BreedHook = () => {
         try {
             axios.get(BREEDS_URL).then(response => {
-                setBreeds(response.data)
+                setBreeds?.(response.data)
             })
         } catch (error) {
             console.log(error)
@@ -118,9 +91,9 @@ const Home = () => {
         <h1> Encatlopedia </h1>
         <Form.Select aria-label="Select Cat Breed" onChange={handleSelect}>
             <option> Select Breed </option>
-            {breeds.map(breed => {
+            {breeds?.map(b => {
                 return (
-                    <option key={breed.id} value={breed.id}>{breed.name}</option>
+                    <option key={b.id} value={b.id}>{b.name}</option>
                 )
             })}
         </Form.Select>
