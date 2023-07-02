@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react'
 import { Card, Form } from 'react-bootstrap'
-import BreedType from '../../App'
 import axios from 'axios'
 
 //API Constants
@@ -33,7 +32,8 @@ export type BreedType = {
         intelligence: number,
         shedding_level: number,
         social_needs: number,
-    }
+    },
+    children: React.ReactNode
   }
 
 const Home = () => {
@@ -55,6 +55,11 @@ const Home = () => {
         <h1> Encatlopedia </h1>
         <Form.Select aria-label="Select Cat Breed">
             <option> Select Breed </option>
+            {breeds.map(breed => {
+                return (
+                    <option key={breed.id} value={breed.id}>{breed.name}</option>
+                )
+            })}
         </Form.Select>
     </div>
   )
