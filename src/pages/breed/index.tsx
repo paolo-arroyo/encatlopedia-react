@@ -6,7 +6,6 @@ import axios from 'axios'
 
 const Breed = () => {
     const { id } = useParams()
-    console.log(id)
     const {
         loading, setLoading,
         catData, setCatData
@@ -25,7 +24,7 @@ const Breed = () => {
             setLoading?.(false)
         }
     },[catUrl, setCatData, setLoading])
-    
+
   return (
     <Container>
         {loading && <h3 style={{textAlign: "center"}}> Loading ... </h3>}

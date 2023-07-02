@@ -3,7 +3,6 @@ import { Form } from 'react-bootstrap'
 import CatDisplay from '../../components/CatDisplay'
 import { CatContext } from '../../contexts/CatContext'
 import axios from 'axios'
-import { css } from '@emotion/react';
 
 const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
 
