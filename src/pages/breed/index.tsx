@@ -25,7 +25,7 @@ const Breed = () => {
             setLoading?.(false)
         }
     }
-    useEffect(CatHook,[catUrl])
+    useEffect(CatHook,[catUrl, setCatData, setLoading])
   return (
     <Container>
         {loading && <h3 style={{textAlign: "center"}}> Loading ... </h3>}

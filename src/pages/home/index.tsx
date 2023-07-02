@@ -2,7 +2,7 @@ import { useEffect, useContext } from 'react'
 import { Form } from 'react-bootstrap'
 import CatDisplay from '../../components/CatDisplay'
 import axios from 'axios'
-import { CatImage, CatContext } from '../../contexts/CatContext'
+import { CatContext } from '../../contexts/CatContext'
 
 const Home = () => {
     const { 
@@ -50,7 +50,7 @@ const Home = () => {
                 if (uniqueCats?.length === showCats?.length) {
                     setShowMore?.(false)
                 }
-                if(uniqueCats != undefined) {
+                if(uniqueCats !== undefined) {
                     setShowCats?.(uniqueCats)
                 }
                 e.target.innerText = "Load More"
