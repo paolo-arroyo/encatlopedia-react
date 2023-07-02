@@ -1,40 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { Form } from 'react-bootstrap'
 import CatDisplay from '../../components/CatDisplay'
 import axios from 'axios'
-import { BreedType } from '../../contexts/CatContext'
-import { CatContext } from '../../contexts/CatContext'
-
-// Type Declarations (Breed Data, Cat Images)
-
-export type CatImage = {
-    id: string,
-    url: string,
-    width: number,
-    height: number
-}
-
-export type CatData = {
-    id: string,
-    url: string,
-    width: number,
-    height: number,
-    breeds: BreedType[]
-}
-
-
-export type CatProps = {
-    showCats: CatImage[],
-    breed: string,
-    getMoreCats: (e:any) => void,
-    showMore: boolean
-}
+import { CatImage, CatContext } from '../../contexts/CatContext'
 
 const Home = () => {
-    const { breeds, setBreeds } = useContext(CatContext)
-    const [ selected, setSelected ] = useState('') //Breed selector string
-    const [ showCats, setShowCats ] = useState<CatImage[]>([]) //List of cat images to display
-    const [ showMore, setShowMore] = useState(true) //Control visibility of 'Load More' button
+    const { 
+        breeds, setBreeds, 
+        showCats, setShowCats,
+        selected, setSelected,
+        showMore, setShowMore,
+    } = useContext(CatContext)
 
     //API Constants
     const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
@@ -48,33 +24,35 @@ const Home = () => {
             console.log(error)
         }
     }
-    useEffect(BreedHook, [])
+    useEffect(BreedHook, [setBreeds])
 
     const getCats = (breed: string) => {
         let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${breed}&limit=10`
         try {
             axios.get(catUrl).then(response => {
-                setShowCats(response.data)
+                setShowCats?.(response.data)
             })
-            setShowMore(true)
+            setShowMore?.(true)
         } catch (error) {
-            setShowCats([])
+            setShowCats?.([])
         }
     }
 
-    const getMoreCats = (e:any) => {
+    const getMoreCats = (e: any) => {
         e.target.innerText = "Loading More ..."
         let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${selected}&limit=10`
 
         //Try: Make another GET request, add all in response to existing list of cat images, and filter out duplicates.
         try {
             axios.get(catUrl).then(response => {
-                let newCats = showCats.concat(response.data)
-                let uniqueCats = newCats.filter((cat,index,self) => { return (self.findIndex((v) => v.id === cat.id) === index)})
-                if (uniqueCats.length === showCats.length) {
-                    setShowMore(false)
+                let newCats = showCats?.concat(response.data)
+                let uniqueCats = newCats?.filter((cat,index,self) => { return (self.findIndex((v) => v.id === cat.id) === index)})
+                if (uniqueCats?.length === showCats?.length) {
+                    setShowMore?.(false)
                 }
-                setShowCats(uniqueCats)
+                if(uniqueCats != undefined) {
+                    setShowCats?.(uniqueCats)
+                }
                 e.target.innerText = "Load More"
             })
         } catch (error) {
@@ -84,7 +62,7 @@ const Home = () => {
     }
     const handleSelect = (e:any) => {
         getCats(e.target.value)
-        setSelected(e.target.value)
+        setSelected?.(e.target.value)
     }
   return (
     <div>
@@ -97,7 +75,8 @@ const Home = () => {
                 )
             })}
         </Form.Select>
-        <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} />
+        {showCats && selected && showMore && <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} />}
+        
     </div>
   )
 }

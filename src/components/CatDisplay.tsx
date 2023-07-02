@@ -1,6 +1,13 @@
 import React from 'react'
-import { CatProps } from '../pages/home'
+import { CatImage } from '../contexts/CatContext'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+
+export type CatProps = {
+    showCats: CatImage[],
+    breed: string,
+    getMoreCats: (e:any) => void,
+    showMore: boolean
+}
 
 const CatDisplay = (props: CatProps) => {
     const { showCats, getMoreCats, showMore } = props

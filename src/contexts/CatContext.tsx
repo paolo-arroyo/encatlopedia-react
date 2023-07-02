@@ -30,23 +30,67 @@ export type BreedType = {
     children: React.ReactNode
   }
 
-  export interface CatContextInterface {
+export type CatImage = {
+    id: string,
+    url: string,
+    width: number,
+    height: number
+}
+
+export type CatData = {
+    id: string | undefined,
+    url: string,
+    width: number,
+    height: number,
+    breeds: BreedType[]
+}
+
+export interface CatContextInterface {
     breeds: BreedType[],
-    setBreeds: Dispatch<SetStateAction<BreedType[]>>
-  }
+    setBreeds: Dispatch<SetStateAction<BreedType[]>>,
+    showCats: CatImage[],
+    setShowCats: Dispatch<SetStateAction<CatImage[]>>,
+    selected: string,
+    setSelected: Dispatch<SetStateAction<string>>,
+    showMore: boolean,
+    setShowMore: Dispatch<SetStateAction<boolean>>,
+    loading: boolean,
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    catData: CatData,
+    setCatData: Dispatch<SetStateAction<CatData>>,
+}
 
-  export const CatContext = createContext<Partial<CatContextInterface>>({})
-  
-  type CatProviderProps = {
-    children: ReactNode
-  }
+export const CatContext = createContext<Partial<CatContextInterface>>({})
 
-  export const CatProvider = ({children}: CatProviderProps) => {
-    const [ breeds, setBreeds ] = useState<BreedType[]>([])
+type CatProviderProps = {
+  children: ReactNode
+}
 
-    return (
-        <CatContext.Provider value={{ breeds, setBreeds }}>
-            {children}
-        </CatContext.Provider>
-    )
-  }
+export const CatProvider = ({children}: CatProviderProps) => {
+  const [ breeds, setBreeds ] = useState<BreedType[]>([])
+  const [ selected, setSelected ] = useState('')
+  const [ showCats, setShowCats ] = useState<CatImage[]>([])
+  const [ showMore, setShowMore ] = useState(false)
+  const [ loading, setLoading ] = useState(false)
+  const [ catData, setCatData ] = useState<CatData>({
+    id: '',
+    url: '',
+    width: 0,
+    height: 0,
+    breeds: []
+})
+
+  return (
+      <CatContext.Provider value={{ 
+        breeds, setBreeds, 
+        showCats, setShowCats,
+        selected, setSelected,
+        showMore, setShowMore,
+        loading, setLoading,
+        catData, setCatData
+      }}>
+          {children}
+      </CatContext.Provider>
+  )
+}
+
