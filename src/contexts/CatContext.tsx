@@ -38,7 +38,7 @@ export type CatImage = {
 }
 
 export type CatData = {
-    id: string | undefined,
+    id: string,
     url: string,
     width: number,
     height: number,

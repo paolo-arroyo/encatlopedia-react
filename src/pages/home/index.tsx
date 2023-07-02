@@ -1,5 +1,5 @@
 import { useEffect, useContext } from 'react'
-import { Form } from 'react-bootstrap'
+import { Select } from '../../components/Select'
 import CatDisplay from '../../components/CatDisplay'
 import { CatContext } from '../../contexts/CatContext'
 import axios from 'axios'
@@ -65,15 +65,16 @@ const Home = () => {
   return (
     <div>
         <h1> Encatlopedia </h1>
-        <Form.Select aria-label="Select Cat Breed" onChange={handleSelect}>
+        <h6> Breed: </h6>
+        <Select aria-label="Select Cat Breed" onChange={handleSelect}>
             <option> Select Breed </option>
             {breeds?.map(b => {
                 return (
                     <option key={b.id} value={b.id}>{b.name}</option>
                 )
             })}
-        </Form.Select>
-        {showCats && selected && showMore && <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} />}
+        </Select>
+        {showCats && selected && showMore !== undefined && <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} />}
         
     </div>
   )

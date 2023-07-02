@@ -1,5 +1,8 @@
 import { CatImage } from '../contexts/CatContext'
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { Col, Card } from 'react-bootstrap'
+import { Button } from './Button'
+import { Wrapper } from './Container'
+import { Row } from './Row'
 
 export type CatProps = {
     showCats: CatImage[],
@@ -14,12 +17,12 @@ const CatDisplay = (props: CatProps) => {
         return <div> No Cats Available </div>
     } else {
         return (
-            <Container>
+            <Wrapper>
                 <Row>
                     {showCats.map(cat => {
                         return (
                             <Col key={cat.id} sm={12} md={6} lg={3}>
-                                <Card style={{ width: "18rem" }}>
+                                <Card style={{ width: "18rem", marginTop: "20px"}}>
                                     <Card.Img variant="top" src={cat.url} />
                                     <Card.Body className="text-center">
                                         <Button href={cat.id}> View Details </Button>
@@ -30,7 +33,7 @@ const CatDisplay = (props: CatProps) => {
                     })}
                 </Row>
                 { showMore && <Button onClick={getMoreCats}> Load More </Button> }
-            </Container>
+            </Wrapper>
         )
     }
   

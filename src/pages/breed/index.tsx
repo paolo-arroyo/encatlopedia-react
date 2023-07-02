@@ -1,6 +1,7 @@
 import { useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { Container, Card, Button } from 'react-bootstrap'
+import { Container, Card } from 'react-bootstrap'
+import { Back } from '../../components/Button'
 import { CatContext } from '../../contexts/CatContext'
 import axios from 'axios'
 
@@ -30,7 +31,7 @@ const Breed = () => {
         {loading && <h3 style={{textAlign: "center"}}> Loading ... </h3>}
         {!loading && catData &&
             <Card style={{width: "50vw", margin: "20px auto"}}>
-                <Card.Header> <Button href={`../?breed=${catData?.breeds[0]?.id}`}>Back</Button></Card.Header>
+                <Card.Header> <Back href={`../?breed=${catData?.breeds[0]?.id}`}>← Back</Back></Card.Header>
                 <Card.Img variant='top' src={catData?.url} />
                 <Card.Body>
                     <Card.Title style={{fontSize: "2rem"}}> {catData?.breeds[0]?.name} </Card.Title>
