@@ -11,4 +11,4 @@ by Paolo Arroyo
 - react-bootstrap
 - bootstrap
 - axios
-- @emotion/react
+- styled-components
