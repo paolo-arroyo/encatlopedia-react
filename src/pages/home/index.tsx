@@ -43,13 +43,16 @@ export type CatType = {
 
 export type CatProps = {
     showCats: CatType[],
-    breed: string
+    breed: string,
+    getMoreCats: (e:any) => void,
+    showMore: boolean
 }
 
 const Home = () => {
     const [ breeds, setBreeds ] = useState<BreedType[]>([])
     const [ selected, setSelected ] = useState('')
     const [ showCats, setShowCats ] = useState<CatType[]>([])
+    const [ showMore, setShowMore] = useState(true)
 
     //API Constants
     const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
@@ -72,7 +75,23 @@ const Home = () => {
                 setShowCats(response.data)
             })
         } catch (error) {
+            setShowCats([])
+        }
+    }
+
+    const getMoreCats = (e:any) => {
+        e.target.innerText = "Loading More ..."
+        let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${selected}&limit=10`
+        try {
+            axios.get(catUrl).then(response => {
+                let newCats = showCats.concat(response.data)
+                let uniqueCats = newCats
+                setShowCats(uniqueCats)
+                e.target.innerText = "Load More"
+            })
+        } catch (error) {
             console.log(error)
+            e.target.innerText = "Load More"
         }
     }
     const handleSelect = (e:any) => {
@@ -90,7 +109,7 @@ const Home = () => {
                 )
             })}
         </Form.Select>
-        <CatDisplay showCats={showCats} breed={selected} />
+        <CatDisplay showCats={showCats} breed={selected} getMoreCats={getMoreCats} showMore={showMore} />
     </div>
   )
 }
