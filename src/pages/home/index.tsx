@@ -34,25 +34,34 @@ export type BreedType = {
     children: React.ReactNode
   }
 
-export type CatType = {
+export type CatImage = {
     id: string,
     url: string,
     width: number,
     height: number
 }
 
+export type CatData = {
+    id: string,
+    url: string,
+    width: number,
+    height: number,
+    breeds: BreedType[]
+}
+
+
 export type CatProps = {
-    showCats: CatType[],
+    showCats: CatImage[],
     breed: string,
     getMoreCats: (e:any) => void,
     showMore: boolean
 }
 
 const Home = () => {
-    const [ breeds, setBreeds ] = useState<BreedType[]>([])
-    const [ selected, setSelected ] = useState('')
-    const [ showCats, setShowCats ] = useState<CatType[]>([])
-    const [ showMore, setShowMore] = useState(true)
+    const [ breeds, setBreeds ] = useState<BreedType[]>([]) //Array containing breed data
+    const [ selected, setSelected ] = useState('') //Breed selector string
+    const [ showCats, setShowCats ] = useState<CatImage[]>([]) //List of cat images to display
+    const [ showMore, setShowMore] = useState(true) //Control visibility of 'Load More' button
 
     //API Constants
     const BREEDS_URL = "https://api.thecatapi.com/v1/breeds/"
@@ -74,6 +83,7 @@ const Home = () => {
             axios.get(catUrl).then(response => {
                 setShowCats(response.data)
             })
+            setShowMore(true)
         } catch (error) {
             setShowCats([])
         }
@@ -82,10 +92,15 @@ const Home = () => {
     const getMoreCats = (e:any) => {
         e.target.innerText = "Loading More ..."
         let catUrl = `https://api.thecatapi.com/v1/images/search/?breed_ids=${selected}&limit=10`
+
+        //Try: Make another GET request, add all in response to existing list of cat images, and filter out duplicates.
         try {
             axios.get(catUrl).then(response => {
                 let newCats = showCats.concat(response.data)
-                let uniqueCats = newCats
+                let uniqueCats = newCats.filter((cat,index,self) => { return (self.findIndex((v) => v.id === cat.id) === index)})
+                if (uniqueCats.length === showCats.length) {
+                    setShowMore(false)
+                }
                 setShowCats(uniqueCats)
                 e.target.innerText = "Load More"
             })

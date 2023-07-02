@@ -3,7 +3,7 @@ import { CatProps } from '../pages/home'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
 
 const CatDisplay = (props: CatProps) => {
-    const { showCats, getMoreCats } = props
+    const { showCats, getMoreCats, showMore } = props
     if (props.showCats.length === 0) {
         return <div> No Cats Available </div>
     } else {
@@ -23,7 +23,7 @@ const CatDisplay = (props: CatProps) => {
                         )
                     })}
                 </Row>
-                <Button onClick={getMoreCats}> Load More </Button>
+                { showMore && <Button onClick={getMoreCats}> Load More </Button> }
             </Container>
         )
     }
